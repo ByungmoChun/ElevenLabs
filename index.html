@@ -1,0 +1,274 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0;max-width:700px}
+.sec{font-size:11px;font-weight:500;color:var(--color-text-tertiary);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.igrp{display:flex;flex-direction:column;gap:4px}
+.ilbl{font-size:12px;color:var(--color-text-secondary)}
+.model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.voice-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.chip{border:.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:7px 6px;font-size:11px;text-align:center;cursor:pointer;color:var(--color-text-secondary);transition:all .15s;line-height:1.35}
+.chip:hover{border-color:var(--color-border-primary);color:var(--color-text-primary)}
+.chip.sel{border-color:#7F77DD;background:#EEEDFE;color:#3C3489}
+.chip .sub{font-size:10px;color:var(--color-text-tertiary);margin-top:1px}
+.chip.sel .sub{color:#534AB7}
+.slrow{display:grid;grid-template-columns:120px 1fr 44px;align-items:center;gap:10px;margin-bottom:11px}
+.sllbl{font-size:13px;color:var(--color-text-secondary)}
+.slval{font-size:13px;font-family:var(--font-mono);font-weight:500;color:var(--color-text-primary);text-align:right}
+textarea{width:100%;font-size:14px;border-radius:var(--border-radius-md);resize:none;font-family:var(--font-sans);color:var(--color-text-primary);background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);padding:10px 12px;line-height:1.6}
+textarea:focus{outline:none;border-color:var(--color-border-secondary)}
+.charcnt{font-size:11px;color:var(--color-text-tertiary);text-align:right;margin-top:4px}
+.charcnt.warn{color:#BA7517}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.toggle-lbl{font-size:13px;color:var(--color-text-secondary)}
+.toggle{position:relative;width:36px;height:20px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0}
+.tslider{position:absolute;inset:0;background:var(--color-background-secondary);border:.5px solid var(--color-border-secondary);border-radius:20px;transition:.2s}
+.tslider:before{content:'';position:absolute;width:14px;height:14px;left:2px;top:2px;background:var(--color-text-tertiary);border-radius:50%;transition:.2s}
+input:checked+.tslider{background:#7F77DD;border-color:#534AB7}
+input:checked+.tslider:before{transform:translateX(16px);background:#fff}
+.gen-btn{width:100%;padding:10px;background:var(--color-background-primary);border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;font-weight:500;color:var(--color-text-primary);cursor:pointer;transition:all .15s;margin-bottom:12px}
+.gen-btn:hover{background:var(--color-background-secondary)}
+.gen-btn:active{transform:scale(.99)}
+.gen-btn:disabled{opacity:.5;cursor:not-allowed}
+.audio-card{background:var(--color-background-secondary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:12px}
+audio{width:100%;margin-top:8px}
+.code-card{background:var(--color-background-secondary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:12px}
+.code-inner{font-family:var(--font-mono);font-size:11px;color:var(--color-text-secondary);line-height:1.7;word-break:break-all;white-space:pre-wrap}
+.copy-btn{float:right;font-size:11px;color:var(--color-text-tertiary);background:none;border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:2px 8px;cursor:pointer;margin-left:8px}
+.copy-btn:hover{color:var(--color-text-primary)}
+.err{background:#FCEBEB;border:.5px solid #F09595;border-radius:var(--border-radius-md);padding:10px 12px;font-size:13px;color:#501313;margin-bottom:12px;line-height:1.5}
+.badge{display:inline-block;font-size:10px;padding:2px 6px;border-radius:var(--border-radius-md);margin-left:6px;vertical-align:middle}
+.badge-free{background:#EAF3DE;color:#3B6D11;border:.5px solid #C0DD97}
+.info{background:#E6F1FB;border:.5px solid #B5D4F4;border-radius:var(--border-radius-md);padding:9px 12px;font-size:12px;color:#0C447C;margin-bottom:12px;line-height:1.6}
+.lang-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">ElevenLabs TTS 파라미터 플레이그라운드</h2>
+
+<div class="card">
+  <div class="sec">API 키 <span class="badge badge-free">무료 플랜 가능</span></div>
+  <div class="info">ElevenLabs는 CORS 지원으로 브라우저에서 직접 호출돼요. 별도 프록시 서버 불필요.<br>
+  무료 플랜: 월 10,000자 · 카드 불필요 · <a href="https://elevenlabs.io" target="_blank" style="color:#185FA5">elevenlabs.io</a> 가입 후 Profile → API Key</div>
+  <div class="igrp">
+    <span class="ilbl">xi-api-key</span>
+    <input type="password" id="api-key" placeholder="sk-..." />
+  </div>
+</div>
+
+<div class="card">
+  <div class="sec">모델 선택</div>
+  <div class="model-grid" id="model-grid"></div>
+</div>
+
+<div class="card">
+  <div class="sec">보이스 선택</div>
+  <div class="voice-grid" id="voice-grid"></div>
+</div>
+
+<div class="card">
+  <div class="sec">언어</div>
+  <div class="lang-grid" id="lang-grid"></div>
+</div>
+
+<div class="card">
+  <div class="sec">텍스트 입력</div>
+  <textarea id="txt" rows="3" placeholder="변환할 텍스트를 입력하세요.">안녕하세요. 플레이툰 메이커의 AI 음성 합성 기능을 테스트합니다.</textarea>
+  <div class="charcnt" id="charcnt">40 / 5000</div>
+</div>
+
+<div class="card">
+  <div class="sec" style="margin-bottom:16px">음성 파라미터</div>
+
+  <div class="slrow">
+    <span class="sllbl">Stability</span>
+    <input type="range" min="0" max="100" step="1" value="50" id="sl-stab" oninput="updSl('stab')" />
+    <span class="slval" id="v-stab">0.50</span>
+  </div>
+  <div class="slrow">
+    <span class="sllbl">Similarity Boost</span>
+    <input type="range" min="0" max="100" step="1" value="75" id="sl-sim" oninput="updSl('sim')" />
+    <span class="slval" id="v-sim">0.75</span>
+  </div>
+  <div class="slrow">
+    <span class="sllbl">Style</span>
+    <input type="range" min="0" max="100" step="1" value="0" id="sl-style" oninput="updSl('style')" />
+    <span class="slval" id="v-style">0.00</span>
+  </div>
+  <div class="slrow" style="margin-bottom:4px">
+    <span class="sllbl">Speed</span>
+    <input type="range" min="70" max="120" step="1" value="100" id="sl-speed" oninput="updSl('speed')" />
+    <span class="slval" id="v-speed">1.00</span>
+  </div>
+
+  <div class="toggle-row" style="margin-top:10px;border-top:.5px solid var(--color-border-tertiary);padding-top:12px">
+    <span class="toggle-lbl">Speaker Boost <span style="font-size:11px;color:var(--color-text-tertiary)">(원본 화자 유사도 강화, 지연 소폭 증가)</span></span>
+    <label class="toggle"><input type="checkbox" id="boost" checked /><span class="tslider"></span></label>
+  </div>
+</div>
+
+<button class="gen-btn" id="gen-btn" onclick="generate()">음성 생성</button>
+
+<div id="err-area"></div>
+
+<div id="audio-area" style="display:none">
+  <div class="audio-card">
+    <span class="sec">생성된 음성</span>
+    <audio id="player" controls></audio>
+  </div>
+</div>
+
+<div class="code-card">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+    <span class="sec" style="margin-bottom:0">요청 미리보기 (curl)</span>
+    <button class="copy-btn" onclick="copyCode()">복사</button>
+  </div>
+  <pre class="code-inner" id="code-pre"></pre>
+</div>
+</div>
+
+<script>
+const MODELS = [
+  {id:'eleven_multilingual_v2', label:'Multilingual v2', sub:'최고 품질'},
+  {id:'eleven_turbo_v2_5',      label:'Turbo v2.5',      sub:'빠름·다국어'},
+  {id:'eleven_flash_v2_5',      label:'Flash v2.5',      sub:'초저지연 75ms'},
+];
+const VOICES = [
+  {id:'21m00Tcm4TlvDq8ikWAM', label:'Rachel',    sub:'여성·내레이션'},
+  {id:'EXAVITQu4vr4xnSDxMaL', label:'Sarah',     sub:'여성·부드러움'},
+  {id:'XB0fDUnXU5powFXDhCwa', label:'Charlotte', sub:'여성·스웨덴'},
+  {id:'LcfcDJNUP1GQjkzn1xUU', label:'Emily',     sub:'여성·차분'},
+  {id:'JBFqnCBsd6RMkjVDRZzb', label:'George',    sub:'남성·내레이션'},
+  {id:'pNInz6obpgDQGcFmaJgB', label:'Adam',      sub:'남성·딥'},
+  {id:'TX3LPaxmHKxFdv7VOQHJ', label:'Liam',      sub:'남성·젊음'},
+  {id:'IKne3meq5aSn9XLyUdCD', label:'Charlie',   sub:'남성·캐주얼'},
+];
+const LANGS = [
+  {code:'ko', label:'한국어'},
+  {code:'en', label:'English'},
+  {code:'ja', label:'日本語'},
+  {code:'zh', label:'中文'},
+  {code:'',   label:'Auto'},
+];
+
+let st = {model:'eleven_multilingual_v2', voice:'21m00Tcm4TlvDq8ikWAM', lang:'ko'};
+
+function rModels(){
+  document.getElementById('model-grid').innerHTML = MODELS.map(m=>
+    `<button class="chip${st.model===m.id?' sel':''}" onclick="pick('model','${m.id}')">
+      <div style="font-weight:500">${m.label}</div>
+      <div class="sub">${m.sub}</div>
+    </button>`).join('');
+}
+function rVoices(){
+  document.getElementById('voice-grid').innerHTML = VOICES.map(v=>
+    `<button class="chip${st.voice===v.id?' sel':''}" onclick="pick('voice','${v.id}')">
+      <div style="font-weight:500">${v.label}</div>
+      <div class="sub">${v.sub}</div>
+    </button>`).join('');
+}
+function rLangs(){
+  document.getElementById('lang-grid').innerHTML = LANGS.map(l=>
+    `<button class="chip${st.lang===l.code?' sel':''}" onclick="pick('lang','${l.code}')">${l.label}</button>`).join('');
+}
+function pick(k,v){st[k]=v;rModels();rVoices();rLangs();updCode();}
+
+function updSl(k){
+  const map={stab:'sl-stab',sim:'sl-sim',style:'sl-style',speed:'sl-speed'};
+  const raw=parseInt(document.getElementById(map[k]).value);
+  const val = k==='speed' ? (raw/100).toFixed(2) : (raw/100).toFixed(2);
+  document.getElementById('v-'+k).textContent = val;
+  updCode();
+}
+
+function getParams(){
+  return {
+    model_id: st.model,
+    voice_id: st.voice,
+    language_code: st.lang || undefined,
+    text: document.getElementById('txt').value || '(텍스트 없음)',
+    voice_settings:{
+      stability: parseInt(document.getElementById('sl-stab').value)/100,
+      similarity_boost: parseInt(document.getElementById('sl-sim').value)/100,
+      style: parseInt(document.getElementById('sl-style').value)/100,
+      use_speaker_boost: document.getElementById('boost').checked,
+      speed: parseInt(document.getElementById('sl-speed').value)/100,
+    }
+  };
+}
+
+function updCode(){
+  const p=getParams();
+  const body={
+    text: p.text,
+    model_id: p.model_id,
+    voice_settings: p.voice_settings,
+  };
+  if(p.language_code) body.language_code=p.language_code;
+  const curl=`curl -X POST \\
+  'https://api.elevenlabs.io/v1/text-to-speech/${p.voice_id}' \\
+  -H 'xi-api-key: YOUR_API_KEY' \\
+  -H 'Content-Type: application/json' \\
+  -d '${JSON.stringify(body,null,2)}' \\
+  --output speech.mp3`;
+  document.getElementById('code-pre').textContent=curl;
+}
+
+function copyCode(){
+  navigator.clipboard.writeText(document.getElementById('code-pre').textContent);
+  const b=document.querySelector('.copy-btn');
+  b.textContent='복사됨';
+  setTimeout(()=>b.textContent='복사',1500);
+}
+
+document.getElementById('txt').addEventListener('input',function(){
+  const n=this.value.length;
+  const el=document.getElementById('charcnt');
+  el.textContent=n+' / 5000';
+  el.className='charcnt'+(n>4500?' warn':'');
+  updCode();
+});
+document.getElementById('boost').addEventListener('change',updCode);
+
+async function generate(){
+  const btn=document.getElementById('gen-btn');
+  const errArea=document.getElementById('err-area');
+  const audioArea=document.getElementById('audio-area');
+  const apiKey=document.getElementById('api-key').value.trim();
+  const p=getParams();
+
+  if(!apiKey){errArea.innerHTML='<div class="err">API 키를 입력해주세요.</div>';return;}
+  if(!p.text.trim()){errArea.innerHTML='<div class="err">텍스트를 입력해주세요.</div>';return;}
+
+  btn.disabled=true;btn.textContent='생성 중...';
+  errArea.innerHTML='';audioArea.style.display='none';
+
+  const body={text:p.text,model_id:p.model_id,voice_settings:p.voice_settings};
+  if(p.language_code) body.language_code=p.language_code;
+
+  try{
+    const res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${p.voice_id}`,{
+      method:'POST',
+      headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    if(!res.ok){
+      const j=await res.json().catch(()=>({detail:'알 수 없는 오류'}));
+      const msg=j.detail?.message||j.detail||JSON.stringify(j);
+      throw new Error(`HTTP ${res.status}: ${msg}`);
+    }
+    const blob=await res.blob();
+    document.getElementById('player').src=URL.createObjectURL(blob);
+    audioArea.style.display='block';
+  }catch(e){
+    errArea.innerHTML=`<div class="err">오류: ${e.message}</div>`;
+  }finally{
+    btn.disabled=false;btn.textContent='음성 생성';
+  }
+}
+
+rModels();rVoices();rLangs();updCode();
+</script>
