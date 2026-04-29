@@ -213,7 +213,7 @@ function updCode(){
   if(p.language_code) body.language_code=p.language_code;
   const curl=`curl -X POST \\
   'https://api.elevenlabs.io/v1/text-to-speech/${p.voice_id}' \\
-  -H 'xi-api-key: YOUR_API_KEY' \\
+  -H 'xi-api-key: 72233ce5945d245e52cc23e5924ae9f6019aac43e66b6338bb707e6876970f51' \\
   -H 'Content-Type: application/json' \\
   -d '${JSON.stringify(body,null,2)}' \\
   --output speech.mp3`;
