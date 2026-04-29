@@ -55,7 +55,7 @@ audio{width:100%;margin-top:8px}
   무료 플랜: 월 10,000자 · 카드 불필요 · <a href="https://elevenlabs.io" target="_blank" style="color:#185FA5">elevenlabs.io</a> 가입 후 Profile → API Key</div>
   <div class="igrp">
     <span class="ilbl">xi-api-key</span>
-    <input type="password" id="api-key" placeholder="72233ce5945d245e52cc23e5924ae9f6019aac43e66b6338bb707e6876970f51" />
+    <input type="password" id="api-key" placeholder="sk-..." />
   </div>
 </div>
 
@@ -240,7 +240,8 @@ async function generate(){
   const btn=document.getElementById('gen-btn');
   const errArea=document.getElementById('err-area');
   const audioArea=document.getElementById('audio-area');
-  const apiKey=document.getElementById('api-key').value.trim();
+  //const apiKey=document.getElementById('api-key').value.trim();
+  const apiKey='72233ce5945d245e52cc23e5924ae9f6019aac43e66b6338bb707e6876970f51';
   const p=getParams();
 
   if(!apiKey){errArea.innerHTML='<div class="err">API 키를 입력해주세요.</div>';return;}
